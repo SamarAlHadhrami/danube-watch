@@ -13,33 +13,37 @@ mkdirSync(dirname(DB_PATH), { recursive: true });
 const db = new DatabaseSync(DB_PATH);
 
 db.exec(`
-  CREATE TABLE IF NOT EXISTS products (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    name        TEXT    NOT NULL,
-    country     TEXT    NOT NULL,
-    latitude    REAL    NOT NULL,
-    longitude   REAL    NOT NULL,
-    source_url  TEXT,
-    created_at  TEXT    NOT NULL DEFAULT (datetime('now'))
+  DROP TABLE IF EXISTS health_events;
+  DROP TABLE IF EXISTS snapshots;
+  DROP TABLE IF EXISTS products;
+
+  CREATE TABLE products (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    collector_id   TEXT    NOT NULL,
+    title          TEXT    NOT NULL,
+    current_price  REAL,
+    original_price REAL,
+    discount_pct   REAL,
+    category       TEXT,
+    availability   TEXT,
+    url            TEXT,
+    last_seen      TEXT    NOT NULL DEFAULT (datetime('now'))
   );
 
-  CREATE TABLE IF NOT EXISTS snapshots (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_id      INTEGER NOT NULL REFERENCES products(id),
-    water_level_cm  REAL,
-    temperature_c   REAL,
-    ph              REAL,
-    turbidity_ntu   REAL,
-    recorded_at     TEXT NOT NULL DEFAULT (datetime('now'))
+  CREATE TABLE snapshots (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id   INTEGER NOT NULL REFERENCES products(id),
+    price        REAL    NOT NULL,
+    discount_pct REAL,
+    captured_at  TEXT    NOT NULL DEFAULT (datetime('now'))
   );
 
-  CREATE TABLE IF NOT EXISTS health_events (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_id  INTEGER NOT NULL REFERENCES products(id),
-    severity    TEXT    NOT NULL CHECK(severity IN ('info', 'warning', 'danger')),
-    message     TEXT    NOT NULL,
-    occurred_at TEXT    NOT NULL DEFAULT (datetime('now')),
-    resolved_at TEXT
+  CREATE TABLE health_events (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    collector_id TEXT NOT NULL,
+    status       TEXT NOT NULL,
+    message      TEXT NOT NULL,
+    timestamp    TEXT NOT NULL DEFAULT (datetime('now'))
   );
 `);
 
