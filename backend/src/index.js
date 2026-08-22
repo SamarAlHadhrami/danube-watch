@@ -1,5 +1,6 @@
-require('dotenv').config();
-const express = require('express');
+import 'dotenv/config';
+import express from 'express';
+import db from './db/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -7,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', db: db ? 'connected' : 'unavailable' });
 });
 
 app.listen(PORT, () => {
