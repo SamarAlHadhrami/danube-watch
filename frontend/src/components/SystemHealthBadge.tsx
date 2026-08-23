@@ -33,6 +33,8 @@ function badgeLabel(status: OverallStatus): string {
   }
 }
 
+const isPulsing = (s: OverallStatus) => s === 'healing' || s === 'detected';
+
 export function SystemHealthBadge() {
   const [status, setStatus] = useState<OverallStatus>('unknown');
 
@@ -50,7 +52,14 @@ export function SystemHealthBadge() {
   }, []);
 
   return (
-    <Badge style={badgeStyle(status)} className="text-xs font-semibold px-2.5 py-1">
+    <Badge
+      className={[
+        'text-xs font-semibold px-2.5 py-1',
+        'transition-colors duration-300',
+        isPulsing(status) ? 'animate-pulse' : '',
+      ].join(' ')}
+      style={badgeStyle(status)}
+    >
       {badgeLabel(status)}
     </Badge>
   );
