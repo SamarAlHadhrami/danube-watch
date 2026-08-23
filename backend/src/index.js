@@ -72,7 +72,7 @@ app.get('/api/status', (_req, res) => {
 
 // ── Scheduler ──────────────────────────────────────────────────────────────
 
-cron.schedule('*/2 * * * *', async () => {
+cron.schedule('*/20 * * * *', async () => {
   try {
     await runAllMonitors();
   } catch (err) {
