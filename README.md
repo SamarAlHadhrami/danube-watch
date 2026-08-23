@@ -60,6 +60,12 @@ For the demo, we deliberately broke our own demo site's page structure (empty pr
 
 ---
 
+## Example Output
+
+See [`example-output.json`](example-output.json) for a real sample of 4 products returned by the Danube Home collector, including fields for `title`, `current_price`, `original_price`, and `discount_pct` (null when no discount applies).
+
+---
+
 ## Setup & Run
 
 ```bash
