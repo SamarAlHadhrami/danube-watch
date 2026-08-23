@@ -13,11 +13,7 @@ mkdirSync(dirname(DB_PATH), { recursive: true });
 const db = new DatabaseSync(DB_PATH);
 
 db.exec(`
-  DROP TABLE IF EXISTS health_events;
-  DROP TABLE IF EXISTS snapshots;
-  DROP TABLE IF EXISTS products;
-
-  CREATE TABLE products (
+  CREATE TABLE IF NOT EXISTS products (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     collector_id   TEXT    NOT NULL,
     title          TEXT    NOT NULL,
@@ -30,7 +26,7 @@ db.exec(`
     last_seen      TEXT    NOT NULL DEFAULT (datetime('now'))
   );
 
-  CREATE TABLE snapshots (
+  CREATE TABLE IF NOT EXISTS snapshots (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     product_id   INTEGER NOT NULL REFERENCES products(id),
     price        REAL    NOT NULL,
@@ -38,7 +34,7 @@ db.exec(`
     captured_at  TEXT    NOT NULL DEFAULT (datetime('now'))
   );
 
-  CREATE TABLE health_events (
+  CREATE TABLE IF NOT EXISTS health_events (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     collector_id TEXT NOT NULL,
     status       TEXT NOT NULL,
@@ -164,12 +160,22 @@ export function getProducts(collectorId) {
 }
 
 // ── getHealthEvents ────────────────────────────────────────────────────────
+// Returns events ordered newest-first. Optional limit caps the result count.
 
-export function getHealthEvents(collectorId) {
-  if (collectorId) {
-    return db.prepare('SELECT * FROM health_events WHERE collector_id = ? ORDER BY timestamp DESC').all(collectorId);
+export function getHealthEvents(limit) {
+  if (limit != null) {
+    return db.prepare('SELECT * FROM health_events ORDER BY timestamp DESC LIMIT ?').all(limit);
   }
   return db.prepare('SELECT * FROM health_events ORDER BY timestamp DESC').all();
+}
+
+// ── getLatestSnapshot ──────────────────────────────────────────────────────
+// Returns the most recent snapshot row for a given product_id, or null.
+
+export function getLatestSnapshot(productId) {
+  return db
+    .prepare('SELECT * FROM snapshots WHERE product_id = ? ORDER BY captured_at DESC LIMIT 1')
+    .get(productId) ?? null;
 }
 
 export default db;

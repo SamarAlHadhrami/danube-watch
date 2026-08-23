@@ -9,9 +9,20 @@ function previousCount(collectorId) {
   return getProducts(collectorId).length;
 }
 
+// Tracks collectors with a run currently in progress to prevent overlapping runs
+const activeCollectors = new Set();
+
 // ── monitorCollector ───────────────────────────────────────────────────────
 
 export async function monitorCollector(collectorId, url) {
+  if (activeCollectors.has(collectorId)) {
+    console.log('skipping run for ' + collectorId + ', already in progress');
+    return { status: 'skipped' };
+  }
+  activeCollectors.add(collectorId);
+
+  try {
+
   // ── Step 1: initial run ──────────────────────────────────────────────────
   let rawResult;
   try {
@@ -95,6 +106,10 @@ export async function monitorCollector(collectorId, url) {
 
   insertHealthEvent(collectorId, 'escalated', 'still unhealthy after heal: ' + result2.reason);
   return { status: 'escalated' };
+
+  } finally {
+    activeCollectors.delete(collectorId);
+  }
 }
 
 // ── runAllMonitors ─────────────────────────────────────────────────────────
