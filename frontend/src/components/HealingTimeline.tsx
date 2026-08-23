@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Activity } from 'lucide-react';
 import { formatRelativeTime } from '@/lib/time';
 
 function truncateMessage(msg: string, max = 120): string {
@@ -101,7 +102,8 @@ export function HealingTimeline() {
 
   return (
     <div className="flex flex-col gap-1">
-      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+      <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+        <Activity className="w-3.5 h-3.5" />
         System Events
       </h2>
 
