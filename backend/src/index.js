@@ -25,9 +25,10 @@ app.get('/health', (_req, res) => {
 
 // Fire-and-forget: respond immediately, let the run complete in the background
 app.post('/api/trigger-run', (_req, res) => {
+  console.log('[trigger-run] received — calling runAllMonitors');
   res.status(202).json({ message: 'monitor run started' });
   runAllMonitors().catch(err => {
-    console.error('[trigger-run] runAllMonitors error:', err.message);
+    console.error('[trigger-run] runAllMonitors error:', err.stack || err.message);
   });
 });
 
