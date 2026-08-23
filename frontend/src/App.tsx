@@ -1,3 +1,7 @@
+import { SystemHealthBadge } from '@/components/SystemHealthBadge';
+import { ProductTable }      from '@/components/ProductTable';
+import { HealingTimeline }   from '@/components/HealingTimeline';
+
 function App() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -14,13 +18,30 @@ function App() {
         <span className="text-lg font-bold tracking-tight text-foreground">
           Danube Watch
         </span>
-        <div id="status-badge-slot" />
+        <SystemHealthBadge />
       </header>
 
       {/* ── Main content ───────────────────────────────────────────────────── */}
       <main className="flex-1 pt-[56px]">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          {/* Components will be added here in the next phase */}
+
+          {/* Two-column layout: ProductTable (65%) + HealingTimeline (35%) */}
+          <div className="flex flex-col lg:flex-row gap-6">
+
+            {/* Product table — wider column */}
+            <section className="lg:w-[65%] min-w-0">
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                Products
+              </h2>
+              <ProductTable />
+            </section>
+
+            {/* Healing timeline — narrower column */}
+            <aside className="lg:w-[35%] min-w-0">
+              <HealingTimeline />
+            </aside>
+
+          </div>
         </div>
       </main>
 
