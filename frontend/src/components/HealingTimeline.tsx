@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { formatRelativeTime } from '@/lib/time';
 
+function truncateMessage(msg: string, max = 120): string {
+  return msg.length > max ? msg.slice(0, max) + '...' : msg;
+}
+
 type EventStatus = 'healthy' | 'recovered' | 'verified' | 'healing' | 'detected' | 'escalated';
 
 interface HealthEvent {
@@ -75,7 +79,7 @@ export function HealingTimeline() {
               {statusLabel(ev.status)}
             </p>
             <p className="text-xs text-foreground leading-snug mt-0.5">
-              {ev.message}
+              {truncateMessage(ev.message)}
             </p>
             <p className="text-[11px] text-muted-foreground mt-1">
               {formatRelativeTime(ev.timestamp)} · {ev.collector_id.slice(0, 18)}…
