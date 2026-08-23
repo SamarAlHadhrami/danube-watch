@@ -1,94 +1,117 @@
+/* ── Reset & base ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --blue: #1a56db;
-  --blue-dark: #1e429f;
-  --text: #111827;
-  --muted: #6b7280;
-  --bg: #f9fafb;
-  --border: #e5e7eb;
-  --danger: #dc2626;
-  --warning: #d97706;
-  --info: #0284c7;
-}
 
 body {
   font-family: system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  min-height: 100vh;
 }
 
-/* Nav */
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: white;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+/* ── Header ───────────────────────────────────────────────── */
+header {
+  background: #c8102e;
+  color: #fff;
+  padding: 14px 24px;
 }
-.logo { font-weight: 700; font-size: 1.2rem; color: var(--blue); }
-nav ul { display: flex; gap: 1.5rem; list-style: none; }
-nav a { text-decoration: none; color: var(--text); font-size: 0.95rem; }
-nav a:hover { color: var(--blue); }
 
-/* Sections */
-main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
-section { margin-bottom: 3rem; }
-h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.75rem; }
-h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
-
-/* Hero */
-#hero { text-align: center; padding: 4rem 1rem; }
-#hero p { color: var(--muted); max-width: 520px; margin: 0 auto 1.5rem; }
-
-.btn {
-  display: inline-block;
-  background: var(--blue);
-  color: white;
-  padding: 0.65rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.2s;
+.site-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
-.btn:hover { background: var(--blue-dark); }
 
-/* Map */
-.map-placeholder {
-  background: #dbeafe;
-  border: 2px dashed var(--blue);
+.breadcrumb {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  opacity: 0.85;
+}
+
+/* ── Main content ─────────────────────────────────────────── */
+main {
+  max-width: 1100px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+
+.category-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.result-count {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* ── Product grid ─────────────────────────────────────────── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+}
+
+/* ── Product card ─────────────────────────────────────────── */
+.product-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  height: 320px;
+  padding: 18px 16px 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--blue);
-  font-size: 1.1rem;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  transition: box-shadow 0.15s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.product-title {
+  font-size: 0.9rem;
   font-weight: 500;
+  line-height: 1.4;
+  color: #1a1a1a;
+  /* clamp to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3.78em;
 }
 
-/* Alerts */
-.alert-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-.alert {
-  padding: 0.75rem 1rem;
-  border-left: 4px solid;
-  border-radius: 4px;
-  background: white;
+.current-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #c8102e;
+  margin-top: 4px;
 }
-.alert--danger  { border-color: var(--danger);  color: var(--danger); }
-.alert--warning { border-color: var(--warning); color: var(--warning); }
-.alert--info    { border-color: var(--info);    color: var(--info); }
 
-/* Footer */
+.original-price {
+  font-size: 0.85rem;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #c8102e;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
 footer {
   text-align: center;
-  padding: 1.5rem;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.78rem;
+  color: #999;
+  padding: 32px 20px;
 }
